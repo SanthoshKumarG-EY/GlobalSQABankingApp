@@ -1,0 +1,17 @@
+{
+  "name": "addCustomerData",
+  "version": "1.0.0",
+  "description": "Test data for adding a customer in XYZ Banking application",
+  "data": [
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "postCode": "12345"
+    },
+    {
+      "firstName": "User_50649",
+      "lastName": "DWGbQY",
+      "postCode": "15748"
+    }
+  ]
+}
