@@ -1,4 +1,4 @@
-import { AddCustomerData, genCustomerData } from '../models/AddCustomerData';
+import { AddCustomerData, genAccountData, genCustomerData } from '../models/AddCustomerData';
 import { OpenAccountData } from '../models/OpenAccountData';
 import fs from 'fs';
 import path from 'path';
@@ -9,23 +9,30 @@ import customerData from '../../testdata/customerData.json';
 export class TestDataManager {
   static filePath1 = path.join(__dirname, '../../testdata/addCustomerData.json');
   static filePath2 = path.join(__dirname, '../../testdata/customerData.json');
-  static readData() {
-    const data = fs.readFileSync(this.filePath1, 'utf-8');
+  static filePath3 = path.join(__dirname, '../../testdata/accountData.json');
+
+  static filePathMap = new Map<string, string>([
+    ['addCustomerData', this.filePath1],
+    ['customerData', this.filePath2],
+    ['accountData', this.filePath3]
+  ]);
+  static readData(filePath: string) {
+    const data = fs.readFileSync(this.filePathMap.get(filePath)!, 'utf-8');
     return JSON.parse(data);
   }
   
-  static saveData(data: AddCustomerData) {
-    const existingData = this.readData();
+  static saveData(data: AddCustomerData, filePath: string) {
+    const existingData = this.readData(filePath);
     existingData.data.push(data);
-    fs.writeFileSync(this.filePath1, JSON.stringify(existingData, null, 2), 'utf-8');
+    fs.writeFileSync(this.filePathMap.get(filePath)!, JSON.stringify(existingData, null, 2), 'utf-8');
   }
 
-  static overWriteData(data: genCustomerData) {
-    fs.writeFileSync(this.filePath2, JSON.stringify(data, null, 2), 'utf-8');
+  static writeData(data: genCustomerData, filePath: string) {
+    fs.writeFileSync(this.filePathMap.get(filePath)!, JSON.stringify(data, null, 2), 'utf-8');
   }
 
-  static retrieveOverWrittenData() {
-    const data = fs.readFileSync(this.filePath2, 'utf-8');
-    return JSON.parse(data);
+  static writeData1(data: genAccountData, filePath: string) {
+    fs.writeFileSync(this.filePathMap.get(filePath)!, JSON.stringify(data, null, 2), 'utf-8');
   }
+
 }

@@ -26,7 +26,7 @@ export default defineConfig({
   globalTimeout:20000,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    //baseURL: 'https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login',
+    baseURL: 'https://www.globalsqa.com/',
     actionTimeout:10000,
     navigationTimeout:10000,
     /* Base URL to use in actions like `await page.goto('')`. */
@@ -35,7 +35,7 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-   headless:true,
+   headless:false,
    viewport:{width:1280,height:720},
   },
 
@@ -44,7 +44,7 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { channel:"chrome",
-        baseURL: 'https://www.globalsqa.com/',
+       // baseURL: 'https://www.globalsqa.com/',
       },
     },
 

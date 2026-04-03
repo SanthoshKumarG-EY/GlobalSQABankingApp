@@ -26,8 +26,8 @@ export class ManagerPage extends BasePage{
         this.lastNameInput=page.locator('//input[@ng-model="lName"]');
         this.postCodeInput=page.locator('//input[@ng-model="postCd"]');
         this.addCustomerSubmitBtn=page.locator('//button[@type="submit"][text()="Add Customer"]');
-        this.customerSelect=page.locator('#userSelect');
-        this.currencySelect=page.locator('#currency');
+        this.customerSelect=page.locator('//select[@id="userSelect"]');
+        this.currencySelect=page.locator('//select[@id="currency"]');
         this.processBtn=page.locator('//button[@type="submit"][text()="Process"]');
         this.customerSearchInput=page.locator('input[ng-model="searchCustomer"]');
 
@@ -51,10 +51,10 @@ export class ManagerPage extends BasePage{
         await this.type(this.postCodeInput,customerData.postCode);
     }
 
-    async openAccount(accountData: OpenAccountData){
-        await this.selectOption(this.customerSelect,accountData.customerName);
-        await this.selectOption(this.currencySelect,accountData.currency);
-        await this.click(this.processBtn);
+    async openAccount(customerName: string, currency: string){
+        await this.click(this.openAccountBtn);
+        await this.selectOption(this.customerSelect,customerName);
+        await this.selectOption(this.currencySelect,currency);
     }   
 
     async searchCustomer(name:string){
@@ -88,8 +88,19 @@ export class ManagerPage extends BasePage{
         return message;
     }
 
+    async submitAccount(){
+        let message = '';
+        this.page.on('dialog', async dialog => {
+            message += dialog.message();
+            console.log("Dialog Message:", message);
+            await dialog.accept();
+        });
+        await this.click(this.processBtn);
+        return message;
+    }
+
     async generatedID(message: string){
-            const idReg = message.match(/id :\s*(\d+)/);
+            const idReg = message.match(/ :\s*(\d+)/);
             const id = idReg ? idReg[1] : 'null';
             console.log("Generated ID:", id);
             console.log("Dialog Message:", message);
