@@ -36,6 +36,12 @@ export default class BasePage{
     async selectOption(locator:Locator,value:string){
         await locator.selectOption(value);
     }
+    async selectOptionByText(locator:Locator,text:string){
+        await locator.selectOption({label:text});
+    }
+    async selectOptionByLabel(locator:Locator,label:string){
+        await locator.selectOption({label:label});
+    }
     async check(locator:Locator){
         await locator.check();
     }   

@@ -13,3 +13,10 @@ export interface genAccountData {
     customerName: string;
     accountNumber: string;
 }
+
+export interface CustomerDetails {
+    firstName: string;
+    lastName: string;
+    postCode: string;
+    accountNumber: string;
+}

@@ -25,9 +25,9 @@ export class CustomerPage extends BasePage{
 
     constructor(page:Page){
         super(page);
-        this.yourNameSelect=page.locator('#userSelect');
+        this.yourNameSelect=page.locator('//select[@id="userSelect"]');
         this.loginBtn=page.locator('//button[@type="submit"][text()="Login"]');
-        this.accountNumberSelect=page.locator('#accountSelect');
+        this.accountNumberSelect=page.locator('//select[@id="accountSelect"]');
         this.accountNumber=page.locator('//div[@ng-hide="noAccount"]/strong[1]');
         this.accountBalance=page.locator('//div[@ng-hide="noAccount"]/strong[2]');
         this.accountCurrency=page.locator('//div[@ng-hide="noAccount"]/strong[3]');
@@ -48,11 +48,13 @@ export class CustomerPage extends BasePage{
     }
 
     async login(customerName:string){
-        await this.selectOption(this.yourNameSelect,customerName);
+        await this.click(this.yourNameSelect);
+        await this.selectOptionByText(this.yourNameSelect,customerName);
         await this.click(this.loginBtn);
     }   
     async selectAccount(accountNumber:string){
-        await this.selectOption(this.accountNumberSelect,accountNumber);
+        await this.click(this.accountNumberSelect);
+        await this.selectOptionByLabel(this.accountNumberSelect,accountNumber);
     }
     async deposit(amount:string){
         await this.click(this.depositTab);

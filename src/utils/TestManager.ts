@@ -1,4 +1,4 @@
-import { AddCustomerData, genAccountData, genCustomerData } from '../models/AddCustomerData';
+import { AddCustomerData, CustomerDetails, genAccountData, genCustomerData } from '../models/AddCustomerData';
 import { OpenAccountData } from '../models/OpenAccountData';
 import fs from 'fs';
 import path from 'path';
@@ -10,11 +10,13 @@ export class TestDataManager {
   static filePath1 = path.join(__dirname, '../../testdata/addCustomerData.json');
   static filePath2 = path.join(__dirname, '../../testdata/customerData.json');
   static filePath3 = path.join(__dirname, '../../testdata/accountData.json');
+  static filePath4 = path.join(__dirname, '../../testdata/customerDetails.json');
 
   static filePathMap = new Map<string, string>([
     ['addCustomerData', this.filePath1],
     ['customerData', this.filePath2],
-    ['accountData', this.filePath3]
+    ['accountData', this.filePath3],
+    ['customerDetails', this.filePath4]
   ]);
   static readData(filePath: string) {
     const data = fs.readFileSync(this.filePathMap.get(filePath)!, 'utf-8');
@@ -24,6 +26,12 @@ export class TestDataManager {
   static saveData(data: AddCustomerData, filePath: string) {
     const existingData = this.readData(filePath);
     existingData.data.push(data);
+    fs.writeFileSync(this.filePathMap.get(filePath)!, JSON.stringify(existingData, null, 2), 'utf-8');
+  }
+
+  static saveData1(data: CustomerDetails[], filePath: string) {
+    const existingData = this.readData(filePath);
+    existingData.push(data);
     fs.writeFileSync(this.filePathMap.get(filePath)!, JSON.stringify(existingData, null, 2), 'utf-8');
   }
 

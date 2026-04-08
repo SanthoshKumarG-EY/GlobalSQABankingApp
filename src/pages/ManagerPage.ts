@@ -1,6 +1,6 @@
 import { Page, Locator } from "playwright";
 import BasePage from "./BasePage";
-import { AddCustomerData } from "../models/AddCustomerData";
+import { AddCustomerData, CustomerDetails } from "../models/AddCustomerData";
 import { OpenAccountData } from "../models/OpenAccountData";
 
 export class ManagerPage extends BasePage{
@@ -15,13 +15,20 @@ export class ManagerPage extends BasePage{
     readonly currencySelect:Locator;
     readonly processBtn:Locator;
     readonly customerSearchInput:Locator;
+    readonly customerList:Locator;
+    readonly customerFirstName:Locator;
+    readonly customerLastName:Locator;
+    readonly customerPostCode:Locator;
+    readonly customerAccountNumber:Locator;
+    readonly customerDetails: Map<number, CustomerDetails> = new Map();
+    readonly customerDetailsList: CustomerDetails[] = [];
 
 
     constructor(page:Page){
         super(page);
         this.addCustomerBtn=page.locator('//button[@ng-click="addCust()"]');
         this.openAccountBtn=page.locator('//button[@ng-click="openAccount()"]');
-        this.customersBtn=page.locator('//button[@ng-click="showCustomer()"]');
+        this.customersBtn=page.locator('//button[@ng-click="showCust()"]');
         this.firstNameInput=page.locator('//input[@ng-model="fName"]');
         this.lastNameInput=page.locator('//input[@ng-model="lName"]');
         this.postCodeInput=page.locator('//input[@ng-model="postCd"]');
@@ -30,6 +37,11 @@ export class ManagerPage extends BasePage{
         this.currencySelect=page.locator('//select[@id="currency"]');
         this.processBtn=page.locator('//button[@type="submit"][text()="Process"]');
         this.customerSearchInput=page.locator('input[ng-model="searchCustomer"]');
+        this.customerList=page.locator('//div[@class="marTop ng-scope"]//table//tbody//tr');
+        this.customerFirstName=page.locator('//div[@class="marTop ng-scope"]//table//tbody//tr//td[1]');
+        this.customerLastName=page.locator('//div[@class="marTop ng-scope"]//table//tbody//tr//td[2]');
+        this.customerPostCode=page.locator('//div[@class="marTop ng-scope"]//table//tbody//tr//td[3]');
+        this.customerAccountNumber=page.locator('//div[@class="marTop ng-scope"]//table//tbody//tr//td[4]');
 
     }
 
@@ -105,6 +117,21 @@ export class ManagerPage extends BasePage{
             console.log("Generated ID:", id);
             console.log("Dialog Message:", message);
             return id;
+    }
+
+    async getCustomerDetails(count: number){
+        for(let i=0; i<count; i++){
+            const firstName = await this.customerFirstName.nth(i).innerText();
+            const lastName = await this.customerLastName.nth(i).innerText();
+            const postCode = await this.customerPostCode.nth(i).innerText();
+            const accountNumber = await this.customerAccountNumber.nth(i).innerText();  
+            console.log(`Customer ${i+1}: ${firstName} ${lastName}, Post Code: ${postCode}, Account Number: ${accountNumber}`);
+            this.customerDetails.set(i+1, {firstName, lastName, postCode, accountNumber});
+            this.customerDetailsList.push({firstName, lastName, postCode, accountNumber});
+            //return {firstName, lastName, postCode, accountNumber};
+        }
+        //return this.customerDetails;
+        return this.customerDetailsList;
     }
 
 }

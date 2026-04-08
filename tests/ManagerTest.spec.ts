@@ -1,4 +1,5 @@
 import { test, expect } from "../src/fixtures/BaseFixture";
+import { CustomerDetails } from "../src/models/AddCustomerData";
 import { DataGenerator } from "../src/utils/DataGenerator";
 import { TestDataManager } from "../src/utils/TestManager";
 
@@ -31,4 +32,17 @@ test.describe('Manager Tests', () => {
         console.log("Account Number from test: " + accountNumber);
         TestDataManager.writeData1({accountNumber: accountNumber, customerName: accountData.customerName}, 'accountData');
     });
+
+    test('Customer List', async ({ homePage, managerPage }) => {
+        await homePage.navigateTo('/angularJs-protractor/BankingProject/#/login');
+        await homePage.clickBankManagerLogin();
+        await managerPage.clickCustomers();
+        await managerPage.searchCustomer('');
+        const customerCount = await managerPage.customerList.count();
+        console.log("Customer Count: " + customerCount);
+        const customerDetails = await managerPage.getCustomerDetails(customerCount);
+        console.log("Customer Details: ", customerDetails);
+        TestDataManager.saveData1(customerDetails, 'customerDetails');
+    });
+
 });
