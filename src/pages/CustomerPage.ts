@@ -57,12 +57,17 @@ export class CustomerPage extends BasePage{
         await this.selectOptionByLabel(this.accountNumberSelect,accountNumber);
     }
     async deposit(amount:string){
+        await this.depositTab.waitFor({ state: 'visible' });
         await this.click(this.depositTab);
+        await this.amountInput.waitFor({ state: 'visible' });
         await this.type(this.amountInput,amount);
         await this.click(this.depositBtn);
     }
     async withdraw(amount:string){
+        await this.withdrawlTab.waitFor({ state: 'visible' });
         await this.click(this.withdrawlTab);
+        await this.amountInput.waitFor({ state: 'visible' });
+        await this.withdrawBtn.waitFor({ state: 'visible' });
         await this.type(this.amountInput,amount);
         await this.click(this.withdrawBtn);
     }
@@ -73,6 +78,7 @@ export class CustomerPage extends BasePage{
         await this.click(this.logoutBtn);
     }
     async getMessage(){
+        await this.transactionMsg.waitFor({ state: 'visible' });
         return await this.getText(this.transactionMsg);
     }
 }

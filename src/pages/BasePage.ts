@@ -10,7 +10,8 @@ export default class BasePage{
         await locator.click();
     }       
     async type(locator:Locator,text:string){
-        await locator.type(text);
+        await locator.waitFor({ state: 'visible' });
+        await locator.fill(text);
     }
     async getText(locator:Locator){
         return await locator.textContent();

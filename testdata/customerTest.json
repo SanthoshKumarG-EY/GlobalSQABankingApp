@@ -2,6 +2,7 @@
     "customer": {
         "accountNumber": "1004",
         "name": "Harry Potter",
-        "amount": "500"
+        "amount": "500",
+        "withdrawalAmount": "100"
     }
 }

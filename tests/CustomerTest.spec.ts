@@ -39,4 +39,20 @@ test.describe('Customer Tests', () => {
         console.log("Withdraw Message: " + withdrawMessage);
         expect(withdrawMessage).toBe('Transaction Failed. You can not withdraw amount more than the balance.');
     });
+
+    test('Deposit and Withdraw Money', async ({ homePage, customerPage }) => {
+        await homePage.navigateTo('/angularJs-protractor/BankingProject/#/login');
+        await homePage.clickCustomerLogin();
+        await customerPage.login(customer.name);    
+        await expect(customerPage.accountNumber).toBeVisible();
+        await customerPage.selectAccount(customer.accountNumber);
+        await customerPage.deposit(customer.amount);
+        const depositMessage = await customerPage.getMessage();
+        console.log("Deposit Message: " + depositMessage);
+        expect(depositMessage).toBe('Deposit Successful');
+        await customerPage.withdraw(customer.withdrawalAmount); 
+        const withdrawMessage = await customerPage.getMessage();
+        console.log("Withdraw Message: " + withdrawMessage);
+        expect(withdrawMessage).toBe('Transaction successful');
+    });
 });
