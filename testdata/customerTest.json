@@ -3,6 +3,7 @@
         "accountNumber": "1004",
         "name": "Harry Potter",
         "amount": "500",
-        "withdrawalAmount": "100"
+        "withdrawalAmount": "100",
+        "balance": "400"
     }
 }

@@ -50,9 +50,13 @@ test.describe('Customer Tests', () => {
         const depositMessage = await customerPage.getMessage();
         console.log("Deposit Message: " + depositMessage);
         expect(depositMessage).toBe('Deposit Successful');
+        const accountBalance = await customerPage.getText(customerPage.accountBalance);
+        console.log("Account Balance: " + accountBalance);
+        expect(accountBalance).toBe(customer.amount);
         await customerPage.withdraw(customer.withdrawalAmount); 
         const withdrawMessage = await customerPage.getMessage();
         console.log("Withdraw Message: " + withdrawMessage);
         expect(withdrawMessage).toBe('Transaction successful');
+        expect(await customerPage.getText(customerPage.accountBalance)).toBe(customer.balance);
     });
 });
