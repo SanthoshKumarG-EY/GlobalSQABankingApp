@@ -22,6 +22,10 @@ export class CustomerPage extends BasePage{
     readonly withdrawBtn:Locator;
     readonly transactionMsg:Locator;
     readonly logoutBtn:Locator;
+    readonly transactionTable: Locator;
+    readonly transactionTableRow: Locator;
+    readonly transactionTableColumn: Locator;
+
 
     constructor(page:Page){
         super(page);
@@ -43,8 +47,11 @@ export class CustomerPage extends BasePage{
         this.depositBtn=page.locator('//button[@type="submit"][text()="Deposit"]');
         this.withdrawBtn=page.locator('//button[@type="submit"][text()="Withdraw"]');
         this.transactionMsg=page.locator('//span[@ng-show="message"]');
-        this.transactionsBtn=page.locator('//a[@href="#/customer/transactions"]');
+        //this.transactionsBtn=page.locator('//a[@href="#/customer/transactions"]');
         this.logoutBtn=page.locator('//button[@ng-show="logout"]');
+        this.transactionTable=page.locator('//table[@class="table table-bordered table-striped"]');
+        this.transactionTableRow=page.locator('//table[@class="table table-bordered table-striped"]/tbody/tr');
+        this.transactionTableColumn=page.locator('//table[@class="table table-bordered table-striped"]/tbody/tr/td');
     }
 
     async login(customerName:string){
@@ -72,7 +79,16 @@ export class CustomerPage extends BasePage{
         await this.click(this.withdrawBtn);
     }
     async clickTransactions(){
+        await this.transactionsBtn.waitFor({ state: 'visible' });
         await this.click(this.transactionsBtn);
+        await this.transactionTable.waitFor({ state: 'visible'});
+        /*const rowCount = await this.transactionTableRow.count();
+        for(let i=0; i<rowCount; i++) {
+            const columnCount = await this.transactionTableColumn.count();
+            for(let j=1; j<=columnCount; j++) {
+                console.log(await this.transactionTableColumn.nth(j).textContent());
+            }
+        }*/
     }
     async clickLogout(){
         await this.click(this.logoutBtn);

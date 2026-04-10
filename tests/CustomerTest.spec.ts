@@ -1,4 +1,5 @@
 import { test, expect } from "../src/fixtures/BaseFixture";
+import { HomePage } from "../src/pages/HomePage";
 import customerTestData from '../testdata/customerTest.json';
 
 const { customer } = customerTestData;
@@ -59,4 +60,21 @@ test.describe('Customer Tests', () => {
         expect(withdrawMessage).toBe('Transaction successful');
         expect(await customerPage.getText(customerPage.accountBalance)).toBe(customer.balance);
     });
+
+    test('Deposit, withdraw and transaction history check', async ({ homePage, customerPage }) => {
+        await homePage.navigateTo('/angularJs-protractor/BankingProject/#/login');
+        await homePage.clickCustomerLogin();
+        await customerPage.login(customer.name);    
+        await expect(customerPage.accountNumber).toBeVisible();
+        await customerPage.selectAccount(customer.accountNumber);
+        await customerPage.deposit(customer.amount);
+        const depositMessage = await customerPage.getMessage();
+        expect(depositMessage).toBe('Deposit Successful');
+        await customerPage.withdraw(customer.withdrawalAmount); 
+        const withdrawMessage = await customerPage.getMessage();
+        expect(withdrawMessage).toBe('Transaction successful');
+        expect(await customerPage.getText(customerPage.accountBalance)).toBe(customer.balance);
+        await customerPage.clickTransactions();
+    })
+
 });
